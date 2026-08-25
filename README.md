@@ -22,8 +22,6 @@
   - Android 서비스, Binder Stub, 콜백 브리지 구현
 - `jni/`
   - SOME/IP 클라이언트 및 JNI 연동 코드
-- `client-sample/`
-  - 브리지 서비스 연동 예제 앱
 
 ## IVI 플랫폼 소스 트리 반영 위치
 
