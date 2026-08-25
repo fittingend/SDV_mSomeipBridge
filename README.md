@@ -150,3 +150,9 @@ adb logcat | grep -i SoaMlm
 ```bash
 adb shell dumpsys activity services | grep -i MSomeIpBridgeService
 ```
+
+## 주의 사항
+
+- 현재 `SoaVehicleInfo` 알림 수신부는 AA에서 송신하는 실제 payload 형태가 FIDL/FDEPL 정의와 일치하지 않아, generated proxy의 일반 `Deserialize` 경로 대신 수동 parsing으로 우회하고 있다.
+- `SoaVehicleInfo`를 제외한 다른 부품(`SoaHvac`, `SoaMlm`)의 경우에도 현재 AA 송신 payload가 FIDL/FDEPL 정의와 완전히 일치하는지, 그리고 generated proxy의 `Deserialize`가 실차/실서비스 환경에서 정상 동작하는지는 아직 확인되지 않았다.
+- 따라서 실제 연동 중 deserialize 실패, 필드 누락, 값 깨짐이 보이면 각 도메인 payload 구조에 맞춰 수동 parsing 또는 generated proxy 보정 작업이 추가로 필요할 수 있다.
