@@ -1,0 +1,83 @@
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+cc_defaults {
+    name: "msomeip_bridge_jni_defaults",
+    vendor_available: true,
+    stl: "c++_shared",
+    rtti: true,
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+        "-Wno-unused-parameter",
+        "-Wno-ignored-attributes",
+        "-Wno-unused-lambda-capture",
+        "-Wno-unused-variable",
+    ],
+    cppflags: [
+        "-std=c++17",
+        "-fexceptions",
+        "-D_GLIBCXX_USE_NANOSLEEP",
+        "-DBOOST_LOG_DYN_LINK",
+        "-pthread",
+        "-Wno-unused-private-field",
+        "-Wno-deprecated-declarations",
+    ],
+    shared_libs: [
+        "libmsomeip_cpp",
+        "liblog",
+        "libnativehelper",
+    ],
+    local_include_dirs: [
+        "jni",
+        "jni/generated",
+    ],
+    export_include_dirs: ["jni"],
+    sanitize: {
+        scs: true,
+    },
+}
+
+cc_library_shared {
+    name: "libSoaVehicleInfo-Client",
+    defaults: ["msomeip_bridge_jni_defaults"],
+    srcs: ["jni/SoaVehicleInfoClient.cpp"],
+}
+
+cc_library_shared {
+    name: "libSoaHvac-Client",
+    defaults: ["msomeip_bridge_jni_defaults"],
+    srcs: ["jni/SoaHvacClient.cpp"],
+}
+
+cc_library_shared {
+    name: "libSoaMlm-Client",
+    defaults: ["msomeip_bridge_jni_defaults"],
+    srcs: ["jni/SoaMlmClient.cpp"],
+}
+
+android_app {
+    name: "MSomeIPBridgeService",
+    certificate: "platform",
+    privileged: true,
+    platform_apis: true,
+    manifest: "AndroidManifest.xml",
+    srcs: [
+        "java/**/*.java",
+        "aidl/**/*.aidl",
+    ],
+    jni_libs: [
+        "libSoaVehicleInfo-Client",
+        "libSoaHvac-Client",
+        "libSoaMlm-Client",
+    ],
+    aidl: {
+        local_include_dirs: ["aidl"],
+    },
+    optimize: {
+        enabled: false,
+        proguard_flags_files: ["proguard-jni-keep.flags"],
+    },
+}

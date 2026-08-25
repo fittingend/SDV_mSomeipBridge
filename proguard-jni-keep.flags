@@ -1,0 +1,8 @@
+-keep class com.katech.ivi.connected.app.jni.SoaVehicleInfoJNI { *; }
+-keep class com.katech.ivi.connected.app.jni.SoaVehicleInfoJNI$* { *; }
+
+-keep class com.katech.ivi.connected.app.jni.SoaHvacJNI { *; }
+-keep class com.katech.ivi.connected.app.jni.SoaHvacJNI$* { *; }
+
+-keep class com.katech.ivi.connected.app.jni.SoaMlmJNI { *; }
+-keep class com.katech.ivi.connected.app.jni.SoaMlmJNI$* { *; }

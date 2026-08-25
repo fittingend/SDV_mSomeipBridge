@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.msomeipbridgeclient">
+
+    <uses-permission android:name="com.katech.ivi.msomeip.bridge.permission.ACCESS_BRIDGE" />
+
+    <application android:hasCode="true" />
+</manifest>

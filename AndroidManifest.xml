@@ -1,0 +1,25 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.katech.ivi.msomeip.bridge">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <permission
+        android:name="com.katech.ivi.msomeip.bridge.permission.ACCESS_BRIDGE"
+        android:protectionLevel="normal" />
+
+    <application
+        android:allowBackup="false"
+        android:hasCode="true"
+        android:label="MSomeIP Bridge Service"
+        android:persistent="true">
+        <service
+            android:name="com.katech.ivi.connected.app.jni.MSomeIpBridgeService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.katech.ivi.msomeip.bridge.permission.ACCESS_BRIDGE">
+            <intent-filter>
+                <action android:name="com.katech.ivi.msomeip.bridge.action.BIND" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>
