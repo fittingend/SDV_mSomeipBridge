@@ -10,9 +10,9 @@
 - 바인드 액션: `com.katech.ivi.msomeip.bridge.action.BIND`
 - 접근 권한: `com.katech.ivi.msomeip.bridge.permission.ACCESS_BRIDGE`
 - JNI 라이브러리:
-  - `libSoaVehicleInfo-Client`
-  - `libSoaHvac-Client`
-  - `libSoaMlm-Client`
+  - `libMSomeIPBridgeSoaVehicleInfo-Client`
+  - `libMSomeIPBridgeSoaHvac-Client`
+  - `libMSomeIPBridgeSoaMlm-Client`
 
 ## 디렉터리 개요
 
@@ -22,6 +22,16 @@
   - Android 서비스, Binder Stub, 콜백 브리지 구현
 - `jni/`
   - SOME/IP 클라이언트 및 JNI 연동 코드
+
+## 외부 앱 개발자
+
+브리지 시스템 앱이 차량에 탑재되어 있다면 외부 앱은 JNI, FIDL/FDEPL 또는
+`libmsomeip_cpp.so`를 포함할 필요가 없다. 저장소의 AIDL 계약과 Parcelable만
+앱에 포함하고 Binder 서비스에 연결하면 된다.
+
+필요한 파일과 연결 예제는 [`CLIENT_INTEGRATION.md`](CLIENT_INTEGRATION.md)를
+참고한다. 외부 앱은 특정 커밋의 계약 파일을 함께 관리하고, 브리지 계약이
+변경되면 해당 파일들을 같은 버전으로 갱신해야 한다.
 
 ## IVI 플랫폼 소스 트리 반영 위치
 
@@ -123,12 +133,12 @@ adb shell dumpsys activity services com.katech.ivi.msomeip.bridge
 adb root
 adb remount
 adb push out/target/product/mis/system/priv-app/MSomeIPBridgeService/MSomeIPBridgeService.apk /system/priv-app/MSomeIPBridgeService/MSomeIPBridgeService.apk
-adb push out/target/product/mis/system/lib64/libSoaMlm-Client.so /system/lib64/libSoaMlm-Client.so
-adb push out/target/product/mis/system/lib64/libSoaHvac-Client.so /system/lib64/libSoaHvac-Client.so
-adb push out/target/product/mis/system/lib64/libSoaVehicleInfo-Client.so /system/lib64/libSoaVehicleInfo-Client.so
-adb push out/target/product/mis/system/lib/libSoaMlm-Client.so /system/lib/libSoaMlm-Client.so
-adb push out/target/product/mis/system/lib/libSoaHvac-Client.so /system/lib/libSoaHvac-Client.so
-adb push out/target/product/mis/system/lib/libSoaVehicleInfo-Client.so /system/lib/libSoaVehicleInfo-Client.so
+adb push out/target/product/mis/system/lib64/libMSomeIPBridgeSoaMlm-Client.so /system/lib64/libMSomeIPBridgeSoaMlm-Client.so
+adb push out/target/product/mis/system/lib64/libMSomeIPBridgeSoaHvac-Client.so /system/lib64/libMSomeIPBridgeSoaHvac-Client.so
+adb push out/target/product/mis/system/lib64/libMSomeIPBridgeSoaVehicleInfo-Client.so /system/lib64/libMSomeIPBridgeSoaVehicleInfo-Client.so
+adb push out/target/product/mis/system/lib/libMSomeIPBridgeSoaMlm-Client.so /system/lib/libMSomeIPBridgeSoaMlm-Client.so
+adb push out/target/product/mis/system/lib/libMSomeIPBridgeSoaHvac-Client.so /system/lib/libMSomeIPBridgeSoaHvac-Client.so
+adb push out/target/product/mis/system/lib/libMSomeIPBridgeSoaVehicleInfo-Client.so /system/lib/libMSomeIPBridgeSoaVehicleInfo-Client.so
 adb reboot
 ```
 
@@ -152,5 +162,6 @@ adb shell dumpsys activity services | grep -i MSomeIpBridgeService
 ## 주의 사항
 
 - 현재 `SoaVehicleInfo` 알림 수신부는 AA에서 송신하는 실제 payload 형태가 FIDL/FDEPL 정의와 일치하지 않아, generated proxy의 일반 `Deserialize` 경로 대신 수동 parsing으로 우회하고 있다.
-- `SoaVehicleInfo`를 제외한 다른 부품(`SoaHvac`, `SoaMlm`)의 경우에도 현재 AA 송신 payload가 FIDL/FDEPL 정의와 완전히 일치하는지, 그리고 generated proxy의 `Deserialize`가 실차/실서비스 환경에서 정상 동작하는지는 아직 확인되지 않았다.
+- `SoaVehicleInfo`의 속도·기어·ACC·IGN 수신과 `SoaMlm`의 RGB 색상 제어 요청은 실제 IVI/VC 환경에서 확인했다.
+- `SoaMlm` 상태 수신 전체와 `SoaHvac`은 실제 제어기 환경에서 추가 검증이 필요하다.
 - 따라서 실제 연동 중 deserialize 실패, 필드 누락, 값 깨짐이 보이면 각 도메인 payload 구조에 맞춰 수동 parsing 또는 generated proxy 보정 작업이 추가로 필요할 수 있다.

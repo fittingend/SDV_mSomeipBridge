@@ -248,6 +248,9 @@ Java_com_katech_ivi_connected_app_jni_SoaMlmJNI_RequestMlmSetBrightness(
   _SoaMlmClient->myProxy->RequestMlmSetBrightness(_brightness, callStatus);
   if (callStatus != francanstein::CallStatus::SUCCESS) {
     LOGE("requestMlmSetBrightness failed!");
+  } else {
+    LOGI("requestMlmSetBrightness dispatched: brightness=%u",
+         static_cast<unsigned>(_brightness));
   }
 }
 JNIEXPORT void JNICALL
@@ -308,6 +311,9 @@ Java_com_katech_ivi_connected_app_jni_SoaMlmJNI_RequestMlmSetRgbColor(
   _SoaMlmClient->myProxy->RequestMlmSetRgbColor(_colorTableIndex, callStatus);
   if (callStatus != francanstein::CallStatus::SUCCESS) {
     LOGE("requestMlmSetRgbColor failed!");
+  } else {
+    LOGI("requestMlmSetRgbColor dispatched: colorTableIndex=%u",
+         static_cast<unsigned>(_colorTableIndex));
   }
 }
 JNIEXPORT void JNICALL

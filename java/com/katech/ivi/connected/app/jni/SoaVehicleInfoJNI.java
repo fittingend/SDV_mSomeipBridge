@@ -3,7 +3,7 @@ package com.katech.ivi.connected.app.jni;
 public class SoaVehicleInfoJNI {
 
 	static {
-		System.loadLibrary("SoaVehicleInfo-Client");
+		System.loadLibrary("MSomeIPBridgeSoaVehicleInfo-Client");
 	}
 
 	public long proxyptr;

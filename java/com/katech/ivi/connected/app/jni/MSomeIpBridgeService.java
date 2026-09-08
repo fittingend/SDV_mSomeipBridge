@@ -277,6 +277,7 @@ public class MSomeIpBridgeService extends Service implements SoaVehicleInfoBridg
 
         @Override
         public void requestMlmSetBrightness(int brightness) throws RemoteException {
+            Log.i(TAG, "AIDL MLM command received: brightness=" + brightness);
             withMlm(proxy -> proxy.RequestMlmSetBrightness(brightness));
         }
 
@@ -297,6 +298,8 @@ public class MSomeIpBridgeService extends Service implements SoaVehicleInfoBridg
 
         @Override
         public void requestMlmSetRgbColor(byte colorTableIndex) throws RemoteException {
+            Log.i(TAG, "AIDL MLM command received: colorTableIndex="
+                    + Byte.toUnsignedInt(colorTableIndex));
             withMlm(proxy -> proxy.RequestMlmSetRgbColor(colorTableIndex));
         }
 

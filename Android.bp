@@ -41,19 +41,19 @@ cc_defaults {
 }
 
 cc_library_shared {
-    name: "libSoaVehicleInfo-Client",
+    name: "libMSomeIPBridgeSoaVehicleInfo-Client",
     defaults: ["msomeip_bridge_jni_defaults"],
     srcs: ["jni/SoaVehicleInfoClient.cpp"],
 }
 
 cc_library_shared {
-    name: "libSoaHvac-Client",
+    name: "libMSomeIPBridgeSoaHvac-Client",
     defaults: ["msomeip_bridge_jni_defaults"],
     srcs: ["jni/SoaHvacClient.cpp"],
 }
 
 cc_library_shared {
-    name: "libSoaMlm-Client",
+    name: "libMSomeIPBridgeSoaMlm-Client",
     defaults: ["msomeip_bridge_jni_defaults"],
     srcs: ["jni/SoaMlmClient.cpp"],
 }
@@ -69,9 +69,9 @@ android_app {
         "aidl/**/*.aidl",
     ],
     jni_libs: [
-        "libSoaVehicleInfo-Client",
-        "libSoaHvac-Client",
-        "libSoaMlm-Client",
+        "libMSomeIPBridgeSoaVehicleInfo-Client",
+        "libMSomeIPBridgeSoaHvac-Client",
+        "libMSomeIPBridgeSoaMlm-Client",
     ],
     aidl: {
         local_include_dirs: ["aidl"],

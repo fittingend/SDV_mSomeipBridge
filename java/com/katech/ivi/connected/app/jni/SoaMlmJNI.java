@@ -3,7 +3,7 @@ package com.katech.ivi.connected.app.jni;
 public class SoaMlmJNI {
 
 	static {
-		System.loadLibrary("SoaMlm-Client");
+		System.loadLibrary("MSomeIPBridgeSoaMlm-Client");
 	}
 
 	public long proxyptr;

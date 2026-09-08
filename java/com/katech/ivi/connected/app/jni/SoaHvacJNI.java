@@ -3,7 +3,7 @@ package com.katech.ivi.connected.app.jni;
 public class SoaHvacJNI {
 
 	static {
-		System.loadLibrary("SoaHvac-Client");
+		System.loadLibrary("MSomeIPBridgeSoaHvac-Client");
 	}
 
 	public long proxyptr;
