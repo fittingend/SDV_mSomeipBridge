@@ -58,6 +58,24 @@ cc_library_shared {
     srcs: ["jni/SoaMlmClient.cpp"],
 }
 
+cc_library_shared {
+    name: "libMSomeIPBridgeSoaDriverSeat-Client",
+    defaults: ["msomeip_bridge_jni_defaults"],
+    srcs: ["jni/SoaDriverSeatClient.cpp"],
+}
+
+cc_library_shared {
+    name: "libMSomeIPBridgeSoaSmartFilm-Client",
+    defaults: ["msomeip_bridge_jni_defaults"],
+    srcs: ["jni/SoaSmartFilmClient.cpp"],
+}
+
+cc_library_shared {
+    name: "libMSomeIPBridgeSoaWiper-Client",
+    defaults: ["msomeip_bridge_jni_defaults"],
+    srcs: ["jni/SoaWiperClient.cpp"],
+}
+
 android_app {
     name: "MSomeIPBridgeService",
     certificate: "platform",
@@ -69,6 +87,10 @@ android_app {
         "aidl/**/*.aidl",
     ],
     jni_libs: [
+        "libMSomeIPBridgeSoaDriverSeat-Client",
+        "libMSomeIPBridgeSoaSmartFilm-Client",
+        "libMSomeIPBridgeSoaWiper-Client",
+
         "libMSomeIPBridgeSoaVehicleInfo-Client",
         "libMSomeIPBridgeSoaHvac-Client",
         "libMSomeIPBridgeSoaMlm-Client",

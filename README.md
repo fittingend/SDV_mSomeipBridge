@@ -13,6 +13,9 @@
   - `libMSomeIPBridgeSoaVehicleInfo-Client`
   - `libMSomeIPBridgeSoaHvac-Client`
   - `libMSomeIPBridgeSoaMlm-Client`
+  - `libMSomeIPBridgeSoaDriverSeat-Client`
+  - `libMSomeIPBridgeSoaSmartFilm-Client`
+  - `libMSomeIPBridgeSoaWiper-Client`
 
 ## 디렉터리 개요
 

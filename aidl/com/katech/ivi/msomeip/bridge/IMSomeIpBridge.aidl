@@ -61,4 +61,11 @@ interface IMSomeIpBridge {
     oneway void requestMlmSetRgbColorExt(in byte colorTableIndex);
     oneway void startExtJobMlm();
     oneway void stopExtJobMlm();
+
+    // Cinema phase 1: normal SOA controls only.
+    oneway void requestMoveDrvSeatSlide(in byte dir);
+    oneway void requestMoveDrvSeatRecline(in byte dir);
+    oneway void requestMoveDrvSeatHeight(in byte dir);
+    oneway void setAllOpacities(in byte opacity);
+    oneway void requestWiperOperation(in byte mode);
 }

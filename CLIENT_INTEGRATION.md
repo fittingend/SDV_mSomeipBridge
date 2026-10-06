@@ -166,3 +166,28 @@ requestMlmSetRgbColor dispatched: colorTableIndex=...
 - 계약 파일의 package, 필드 순서, 타입 또는 메서드 순서를 임의로 변경하지 않는다.
 - 브리지 기능을 추가할 때는 계약 변경과 시스템 앱 배포 버전을 함께 공지한다.
 - 여러 업체가 이용하더라도 각 앱은 개별 Listener를 등록할 수 있다.
+
+## Cinema phase 1 normal controls
+
+The existing IMSomeIpBridge contract is extended at the end so existing method
+transaction IDs remain unchanged. Clients must ship the matching AIDL contract.
+
+| AIDL method | SOA method | Argument |
+|---|---|---|
+| requestMoveDrvSeatSlide | RequestMoveDrvSeatSlide | 0 STOP, 1 FORWARD, 2 BACKWARD |
+| requestMoveDrvSeatRecline | RequestMoveDrvSeatRecline | 0 STOP, 1 FORWARD, 2 BACKWARD |
+| requestMoveDrvSeatHeight | RequestMoveDrvSeatHeight | 0 STOP, 1 UP, 2 DOWN |
+| setAllOpacities | SetAllOpacities | 0 transparent through 100 max opacity |
+| requestWiperOperation | RequestWiperOperation | Cinema uses 0 OFF, 1 INT1, 2 INT2 |
+
+The generated type/proxy pairs are ported unchanged from example_sdv's
+ivi_app/jni_interface; only command JNI wrappers are added. The historical Wiper
+header lists modes 0..4. Latest SOA also has LOW/HIGH/INT4/INT5; Cinema phase 1 uses
+only the unchanged 0..2 values and does not reinterpret them as LOW/HIGH.
+No new Ext AIDL/Binder/JNI entry points or new subscriptions are added.
+RearCurtain is excluded pending vendor STOP semantics. Existing HVAC/MLM Ext APIs
+remain available for existing clients but are not used by Cinema.
+
+The precondition remains that SOA is available before the first Bridge call.
+Startup availability recovery and existing subscription-token handling are
+separate follow-ups. A successful oneway call does not prove actuator completion.

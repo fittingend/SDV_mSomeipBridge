@@ -32,6 +32,13 @@ public class MSomeIpBridgeService extends Service implements SoaVehicleInfoBridg
     private SoaHvacJNI mHvacProxy;
     private SoaMlmJNI mMlmProxy;
 
+    private final Object mDriverSeatLock = new Object();
+    private SoaDriverSeatJNI mDriverSeatProxy;
+    private final Object mSmartFilmLock = new Object();
+    private SoaSmartFilmJNI mSmartFilmProxy;
+    private final Object mWiperLock = new Object();
+    private SoaWiperJNI mWiperProxy;
+
     private final AtomicInteger mVehicleInfoListenerCount = new AtomicInteger();
     private final AtomicInteger mHvacListenerCount = new AtomicInteger();
     private final AtomicInteger mMlmListenerCount = new AtomicInteger();
@@ -67,6 +74,51 @@ public class MSomeIpBridgeService extends Service implements SoaVehicleInfoBridg
             };
 
     private final IMSomeIpBridge.Stub mBinder = new IMSomeIpBridge.Stub() {
+        @Override
+        public void requestMoveDrvSeatSlide(byte dir) throws RemoteException {
+            synchronized (mDriverSeatLock) {
+                if (mDriverSeatProxy == null) mDriverSeatProxy = new SoaDriverSeatJNI();
+                if (mDriverSeatProxy.proxyptr == 0) throw new RemoteException("DriverSeat proxy connection failed");
+                mDriverSeatProxy.RequestMoveDrvSeatSlide(dir);
+            }
+        }
+
+        @Override
+        public void requestMoveDrvSeatRecline(byte dir) throws RemoteException {
+            synchronized (mDriverSeatLock) {
+                if (mDriverSeatProxy == null) mDriverSeatProxy = new SoaDriverSeatJNI();
+                if (mDriverSeatProxy.proxyptr == 0) throw new RemoteException("DriverSeat proxy connection failed");
+                mDriverSeatProxy.RequestMoveDrvSeatRecline(dir);
+            }
+        }
+
+        @Override
+        public void requestMoveDrvSeatHeight(byte dir) throws RemoteException {
+            synchronized (mDriverSeatLock) {
+                if (mDriverSeatProxy == null) mDriverSeatProxy = new SoaDriverSeatJNI();
+                if (mDriverSeatProxy.proxyptr == 0) throw new RemoteException("DriverSeat proxy connection failed");
+                mDriverSeatProxy.RequestMoveDrvSeatHeight(dir);
+            }
+        }
+
+        @Override
+        public void setAllOpacities(byte opacity) throws RemoteException {
+            synchronized (mSmartFilmLock) {
+                if (mSmartFilmProxy == null) mSmartFilmProxy = new SoaSmartFilmJNI();
+                if (mSmartFilmProxy.proxyptr == 0) throw new RemoteException("SmartFilm proxy connection failed");
+                mSmartFilmProxy.SetAllOpacities(opacity);
+            }
+        }
+
+        @Override
+        public void requestWiperOperation(byte mode) throws RemoteException {
+            synchronized (mWiperLock) {
+                if (mWiperProxy == null) mWiperProxy = new SoaWiperJNI();
+                if (mWiperProxy.proxyptr == 0) throw new RemoteException("Wiper proxy connection failed");
+                mWiperProxy.RequestWiperOperation(mode);
+            }
+        }
+
         @Override
         public void registerVehicleInfoListener(IMSomeIpVehicleInfoListener listener)
                 throws RemoteException {
@@ -333,6 +385,15 @@ public class MSomeIpBridgeService extends Service implements SoaVehicleInfoBridg
         mVehicleInfoListeners.kill();
         mHvacListeners.kill();
         mMlmListeners.kill();
+        synchronized (mDriverSeatLock) {
+            if (mDriverSeatProxy != null) mDriverSeatProxy.close();
+        }
+        synchronized (mSmartFilmLock) {
+            if (mSmartFilmProxy != null) mSmartFilmProxy.close();
+        }
+        synchronized (mWiperLock) {
+            if (mWiperProxy != null) mWiperProxy.close();
+        }
         super.onDestroy();
     }
 

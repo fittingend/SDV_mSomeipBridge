@@ -6,3 +6,9 @@
 
 -keep class com.katech.ivi.connected.app.jni.SoaMlmJNI { *; }
 -keep class com.katech.ivi.connected.app.jni.SoaMlmJNI$* { *; }
+
+-keep class com.katech.ivi.connected.app.jni.SoaDriverSeatJNI { *; }
+
+-keep class com.katech.ivi.connected.app.jni.SoaSmartFilmJNI { *; }
+
+-keep class com.katech.ivi.connected.app.jni.SoaWiperJNI { *; }
